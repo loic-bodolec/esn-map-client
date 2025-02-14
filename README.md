@@ -9,12 +9,12 @@ Ce projet est une application web développée avec React, TypeScript et Vite. I
 CodeForge permet de visualiser les clients d'une ESN sur une carte. L'application est destinée à un usage interne par les collaborateurs de l'ESN, facilitant ainsi la gestion et le suivi des clients et des consultants.
 
 <p align="center">
-  <img src="./screenshots-esn-map/esn-map-0.png" alt="Aperçu de l'application" width="45%" />
-  <img src="./screenshots-esn-map/esn-map-1.png" alt="Aperçu de l'application" width="45%" />
+  <img src="./readme-images/esn-map-0.png" alt="Aperçu de l'application" width="45%" />
+  <img src="./readme-images/esn-map-1.png" alt="Aperçu de l'application" width="45%" />
 </p>
 <p align="center">
-  <img src="./screenshots-esn-map/esn-map-2.png" alt="Aperçu de l'application" width="45%" />
-  <img src="./screenshots-esn-map/esn-map-3.png" alt="Aperçu de l'application" width="45%" />
+  <img src="./readme-images/esn-map-2.png" alt="Aperçu de l'application" width="45%" />
+  <img src="./readme-images/esn-map-3.png" alt="Aperçu de l'application" width="45%" />
 </p>
 
 ### Fonctionnalités principales
