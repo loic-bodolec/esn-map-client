@@ -1,0 +1,22 @@
+@use '../../styles/_variables' as vars;
+
+.company-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.company-logo {
+  width: 150px;
+  height: 150px;
+  border-radius: 25%;
+  margin-bottom: 24px;
+}
+
+.company-body {
+  padding: vars.$padding;
+}

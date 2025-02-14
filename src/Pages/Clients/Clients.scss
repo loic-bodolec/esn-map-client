@@ -1,0 +1,48 @@
+@use '../../styles/_variables' as vars;
+@use '../../styles/_mixins' as mixins;
+
+.clients-container {
+  padding-top: 80px;
+  padding-bottom: 40px;
+  overflow-y: auto;
+  @include mixins.flex-column;
+}
+
+.clients-title {
+  text-align: center;
+}
+
+.client-filters {
+  @include mixins.flex-column;
+  gap: 1rem;
+  margin: 1.5rem;
+}
+
+.client-filters .form-control {
+  width: 100%;
+}
+
+.client-filters-buttons {
+  @include mixins.flex-center;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.clients-button {
+  max-width: 250px;
+  margin: 0 1rem !important;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .client-filters {
+    @include mixins.flex-row;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .client-filters .form-control {
+    width: 20rem;
+  }
+}

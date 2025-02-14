@@ -1,0 +1,33 @@
+@use '../../styles/_cardStyles';
+
+.client-card {
+  @extend .card-base;
+}
+
+.client-card-content {
+  @extend .card-content-base;
+}
+
+.client-card-jobs {
+  @extend .card-jobs-base;
+}
+
+.client-card-expertises {
+  @extend .card-expertises-base;
+}
+
+.client-card-link {
+  @extend .card-link-base;
+}
+
+.client-card-actions {
+  @extend .card-actions-base;
+}
+
+.job-chip {
+  @extend .chip-base;
+}
+
+.expertise-chip {
+  @extend .chip-base;
+}

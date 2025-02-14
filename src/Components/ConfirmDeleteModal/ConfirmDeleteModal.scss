@@ -1,0 +1,29 @@
+@use '../../styles/_variables' as vars;
+@use '../../styles/_mixins' as mixins;
+
+.confirm-modal-box {
+  padding: vars.$padding;
+  background-color: vars.$background-color;
+  margin: auto;
+  max-width: 400px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  @include mixins.box-shadow(vars.$box-shadow);
+  border-radius: vars.$border-radius;
+}
+
+.confirm-modal-title {
+  margin-bottom: vars.$margin-bottom;
+}
+
+.confirm-modal-text {
+  margin-bottom: vars.$margin-bottom;
+}
+
+.confirm-modal-buttons {
+  @include mixins.flex-center;
+  justify-content: space-between;
+  margin-top: vars.$margin-bottom;
+}

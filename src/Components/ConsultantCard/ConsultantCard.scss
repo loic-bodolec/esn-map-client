@@ -1,0 +1,36 @@
+@use '../../styles/_variables' as vars;
+@use '../../styles/_cardStyles';
+
+.consultant-card {
+  @extend .card-base;
+}
+
+.consultant-card-content {
+  @extend .card-content-base;
+  height: auto;
+}
+
+.consultant-card-title {
+  margin-bottom: vars.$margin-bottom;
+}
+
+.consultant-card-work,
+.consultant-card-client,
+.consultant-card-technos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: vars.$gap;
+}
+
+.consultant-card-technos {
+  padding-top: 1rem;
+}
+
+.consultant-techno-chip {
+  @extend .chip-base;
+  margin-left: 0;
+}
+
+.consultant-card-actions {
+  @extend .card-actions-base;
+}

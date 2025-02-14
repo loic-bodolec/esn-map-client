@@ -1,0 +1,15 @@
+@use '../../styles/_cardStyles' as cardStyles;
+
+.techno-card {
+  @extend .card-base;
+  height: 7rem;
+}
+
+.techno-card-content {
+  @extend .card-content-base;
+  height: 3rem;
+}
+
+.techno-card-actions {
+  @extend .card-actions-base;
+}

@@ -1,0 +1,8 @@
+@use '../../styles/_variables' as vars;
+@use '../../styles/_mixins' as mixins;
+
+.home-container {
+  @include mixins.flex-center;
+  height: 100%;
+  width: 100%;
+}

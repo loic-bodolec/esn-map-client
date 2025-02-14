@@ -1,0 +1,33 @@
+@use '../../styles/_variables' as vars;
+
+.Footer {
+  background-color: vars.$primary-color;
+  box-shadow: vars.$box-shadow;
+  width: 100%;
+  display: flex;
+  bottom: 0;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.footer-link {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.copyright {
+  font-size: vars.$font-size-small;
+  vertical-align: middle;
+}
+
+@media screen and (min-width: 800px) {
+  .Footer {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+  .footer-link {
+    width: 100%;
+  }
+}

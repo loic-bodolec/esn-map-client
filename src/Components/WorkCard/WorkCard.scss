@@ -1,0 +1,14 @@
+@use '../../styles/_cardStyles' as cardStyles;
+
+.work-card {
+  @extend .card-base;
+  height: 7rem;
+}
+
+.work-card-content {
+  @extend .card-content-base;
+}
+
+.work-card-actions {
+  @extend .card-actions-base;
+}

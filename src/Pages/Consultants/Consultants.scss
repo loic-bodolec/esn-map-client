@@ -1,0 +1,66 @@
+@use '../../styles/_variables' as vars;
+@use '../../styles/_mixins' as mixins;
+
+.consultants-container {
+  padding-top: 80px;
+  padding-bottom: 40px;
+  overflow-y: auto;
+  @include mixins.flex-column;
+}
+
+.consultants-title,
+.technos-title,
+.works-title {
+  text-align: center;
+}
+
+.technos-title,
+.works-title {
+  padding-top: 2rem;
+}
+
+.consultant-filters {
+  @include mixins.flex-column;
+  gap: 1rem;
+  margin: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.consultant-filters .form-control {
+  width: 100%;
+}
+
+.consultant-filters-buttons {
+  @include mixins.flex-center;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+.technos-container,
+.works-container {
+  margin-top: 2rem;
+}
+
+.consultants-button {
+  max-width: 250px;
+  margin: 0 2rem !important;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .consultant-filters {
+    @include mixins.flex-row;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .consultant-filters .form-control {
+    width: 20rem;
+  }
+}

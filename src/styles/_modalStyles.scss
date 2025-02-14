@@ -1,0 +1,24 @@
+@use './_variables' as vars;
+
+.modal-box {
+  padding: vars.$padding;
+  background-color: vars.$white-color;
+  margin: auto;
+  max-width: 500px;
+  border-radius: vars.$border-radius;
+  box-shadow: vars.$box-shadow;
+}
+
+.modal-title {
+  margin-bottom: vars.$margin-bottom !important;
+}
+
+.modal-field {
+  margin-bottom: vars.$margin-bottom !important;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: vars.$margin-top;
+}

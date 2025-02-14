@@ -1,0 +1,15 @@
+@use '../../styles/_cardStyles' as cardStyles;
+
+.user-card {
+  @extend .card-base;
+  height: 10rem;
+}
+
+.user-card-content {
+  @extend .card-content-base;
+  height: 7rem;
+}
+
+.user-card-actions {
+  @extend .card-actions-base;
+}

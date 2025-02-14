@@ -1,0 +1,164 @@
+@use '../../styles/_variables' as vars;
+
+/* Drawer App Bar */
+.drawer-app-bar {
+  display: flex;
+  margin-bottom: 3rem;
+
+  @media (max-width: 600px) {
+    margin-bottom: 4rem;
+  }
+}
+
+/* App Bar */
+.app-bar {
+  background-color: vars.$secondary-color;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: vars.$primary-color;
+
+  .menu-button {
+    color: vars.$text-color;
+    margin: 0 1rem;
+
+    &.active {
+      color: vars.$white-color;
+      background-color: vars.$secondary-color;
+      padding: 5px;
+      border-radius: vars.$border-radius;
+    }
+  }
+
+  .logout-button {
+    margin-left: 2rem;
+  }
+
+  .menu-icon {
+    color: vars.$text-color;
+    display: none;
+
+    @media (max-width: 600px) {
+      display: block;
+    }
+  }
+
+  .toolbar-buttons {
+    display: none;
+
+    @media (min-width: 600px) {
+      display: block;
+    }
+  }
+}
+
+/* Drawer */
+.drawer {
+  text-align: center;
+
+  .close-icon {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    color: vars.$text-color;
+  }
+
+  .title {
+    margin: vars.$margin-top 0;
+    color: vars.$text-color;
+  }
+
+  .accordion {
+    background-color: vars.$primary-color;
+    box-shadow: none;
+
+    .link {
+      color: vars.$text-color;
+      text-decoration: none;
+      padding: 0;
+      border-radius: vars.$border-radius;
+
+      &.active {
+        color: vars.$white-color;
+        background-color: vars.$secondary-color;
+        padding: 10px;
+      }
+    }
+  }
+
+  .list-item-button {
+    background-color: vars.$primary-color;
+
+    &.active {
+      color: vars.$white-color;
+      background-color: vars.$secondary-color;
+      border-radius: vars.$border-radius;
+      margin: 0.5rem;
+    }
+  }
+
+  .logout-button {
+    margin-top: vars.$margin-top;
+  }
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+
+    img {
+      width: 40px;
+      margin-right: vars.$margin-bottom;
+      border-radius: 25%;
+    }
+  }
+
+  .username {
+    color: vars.$text-color;
+  }
+}
+
+/* Menu Item */
+.menu-item {
+  .link {
+    color: vars.$text-color;
+    background-color: transparent;
+    text-decoration: none;
+
+    &.active {
+      color: vars.$white-color;
+      background-color: vars.$secondary-color;
+      padding: 5px;
+      border-radius: 5px;
+    }
+  }
+}
+
+/* Drawer Paper */
+.drawer-paper {
+  box-sizing: border-box;
+  width: 300px; /* Utilisez la même valeur que drawerWidth */
+}
+
+@media (max-width: 600px) {
+  .drawer-app-bar {
+    margin-bottom: 4rem;
+  }
+
+  .drawer {
+    display: block;
+    background-color: vars.$primary-color;
+    height: 100%;
+  }
+}

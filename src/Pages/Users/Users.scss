@@ -1,0 +1,32 @@
+@use '../../styles/_variables' as vars;
+@use '../../styles/_mixins' as mixins;
+
+.users-container {
+  padding-top: 80px;
+  padding-bottom: 40px;
+  overflow-y: auto;
+  @include mixins.flex-column;
+}
+
+.users-title {
+  text-align: center;
+}
+
+.users-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.users-button {
+  max-width: 250px;
+  margin: 0 1rem !important;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .users-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

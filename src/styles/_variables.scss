@@ -1,0 +1,27 @@
+// Colors
+$primary-color: #007bff;
+$secondary-color: #000000;
+$text-color: #333;
+$background-color: #f8f9fa;
+$white-color: #ffffff;
+$light-background-color: #f5f5f5;
+$gradient-background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+$description-color: #666;
+
+// Spacing
+$padding: 16px;
+$margin-bottom: 16px;
+$margin-top: 16px;
+$gap: 16px;
+$chip-margin: 5px;
+
+// Typography
+$font-size-small: 0.8rem;
+$popup-title-font-size: 1.2rem;
+$popup-title-font-weight: bold;
+
+// Miscellaneous
+$border-radius: 15px;
+$box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+$box-shadow-strong: 0 4px 12px rgba(0, 0, 0, 0.1);
+$transition: transform 0.3s ease;
