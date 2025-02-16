@@ -1,7 +1,7 @@
 import { Box, CircularProgress, List, ListItem, Typography, Link, Chip } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import ConsultantCard from '../../Components/ConsultantCard/ConsultantCard';
-import { useFetchClientByIdQuery } from '../../api/clientsApi';
+import { useFetchClientByIdQuery } from '../../store/api/clientsApi';
 import './ClientDetails.scss';
 
 const ClientDetails: React.FC = () => {

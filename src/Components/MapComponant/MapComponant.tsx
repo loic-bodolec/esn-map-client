@@ -13,9 +13,9 @@ import { DivIcon, LatLngExpression } from 'leaflet';
 import { useMemo, useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { Link } from 'react-router-dom';
-import { useFetchClientsQuery } from '../../api/clientsApi';
-import { useFetchExpertisesQuery } from '../../api/expertisesApi';
-import { useFetchJobsQuery } from '../../api/jobsApi';
+import { useFetchClientsQuery } from '../../store/api/clientsApi';
+import { useFetchExpertisesQuery } from '../../store/api/expertisesApi';
+import { useFetchJobsQuery } from '../../store/api/jobsApi';
 import './MapComponant.scss';
 
 // Create a new marker icon

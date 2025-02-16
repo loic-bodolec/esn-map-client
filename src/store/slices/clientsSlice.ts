@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Client } from '../types/Client';
+import { Client } from '../../types/Client';
 
 interface ClientsState {
   clients: Client[];

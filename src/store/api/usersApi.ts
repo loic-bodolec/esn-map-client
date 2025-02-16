@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQuery from '../api/baseQuery';
-import { User, NewUser, UpdatedUser } from '../types/User';
+import baseQuery from './baseQuery';
+import { User, NewUser, UpdatedUser } from '../../types/User';
 
 export const usersApi = createApi({
   reducerPath: 'usersApi',

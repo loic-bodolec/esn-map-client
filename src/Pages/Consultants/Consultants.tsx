@@ -27,20 +27,20 @@ import {
   useCreateConsultantMutation,
   useUpdateConsultantMutation,
   useDeleteConsultantMutation,
-} from '../../api/consultantsApi';
+} from '../../store/api/consultantsApi';
 import {
   useFetchTechnosQuery,
   useCreateTechnoMutation,
   useUpdateTechnoMutation,
   useDeleteTechnoMutation,
-} from '../../api/technosApi';
+} from '../../store/api/technosApi';
 import {
   useFetchWorksQuery,
   useCreateWorkMutation,
   useUpdateWorkMutation,
   useDeleteWorkMutation,
-} from '../../api/worksApi';
-import { useFetchClientsQuery } from '../../api/clientsApi';
+} from '../../store/api/worksApi';
+import { useFetchClientsQuery } from '../../store/api/clientsApi';
 import { Consultant, NewConsultant, UpdatedConsultant } from '../../types/Consultant';
 import { NewTechno, Techno, UpdatedTechno } from '../../types/Techno';
 import { NewWork, UpdatedWork, Work } from '../../types/Work';

@@ -21,9 +21,9 @@ import {
   useCreateClientMutation,
   useUpdateClientMutation,
   useDeleteClientMutation,
-} from '../../api/clientsApi';
-import { useFetchExpertisesQuery } from '../../api/expertisesApi';
-import { useFetchJobsQuery } from '../../api/jobsApi';
+} from '../../store/api/clientsApi';
+import { useFetchExpertisesQuery } from '../../store/api/expertisesApi';
+import { useFetchJobsQuery } from '../../store/api/jobsApi';
 import { RootState } from '../../store/store';
 import { Client, NewClient, UpdatedClient } from '../../types/Client';
 import './Clients.scss';

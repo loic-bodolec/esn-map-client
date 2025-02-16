@@ -11,8 +11,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
-import { useFetchExpertisesQuery } from '../../api/expertisesApi';
-import { useFetchJobsQuery } from '../../api/jobsApi';
+import { useFetchExpertisesQuery } from '../../store/api/expertisesApi';
+import { useFetchJobsQuery } from '../../store/api/jobsApi';
 import { NewClient } from '../../types/Client';
 
 interface NewClientModalProps {
