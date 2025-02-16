@@ -9,6 +9,7 @@ export const usersApi = createApi({
   endpoints: (builder) => ({
     fetchUsers: builder.query<User[], void>({
       query: () => '/users',
+      transformResponse: (response: User[]) => response ?? [],
       providesTags: (result) =>
         result
           ? [
@@ -17,10 +18,12 @@ export const usersApi = createApi({
             ]
           : [{ type: 'User', id: 'LIST' }],
     }),
+
     fetchUserById: builder.query<User, number>({
-      query: (userId) => `/users/${userId}`,
+      query: (userId) => `/users/user/${userId}`,
       providesTags: (_result, _error, id) => [{ type: 'User', id }],
     }),
+
     createUser: builder.mutation<User, NewUser>({
       query: (user) => ({
         url: '/users/user',
@@ -29,20 +32,28 @@ export const usersApi = createApi({
       }),
       invalidatesTags: [{ type: 'User', id: 'LIST' }],
     }),
+
     updateUser: builder.mutation<User, UpdatedUser>({
       query: (user) => ({
         url: `/users/user/${user.id}`,
         method: 'PUT',
         body: user,
       }),
-      invalidatesTags: (_result, _error, { id }) => [{ type: 'User', id }],
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: 'User', id },
+        { type: 'User', id: 'LIST' },
+      ],
     }),
-    deleteUser: builder.mutation<number, number>({
+
+    deleteUser: builder.mutation<void, number>({
       query: (userId) => ({
         url: `/users/user/${userId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (_result, _error, id) => [{ type: 'User', id }],
+      invalidatesTags: (_result, _error, id) => [
+        { type: 'User', id },
+        { type: 'User', id: 'LIST' },
+      ],
     }),
   }),
 });

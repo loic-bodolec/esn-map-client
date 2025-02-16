@@ -9,6 +9,7 @@ export const expertisesApi = createApi({
   endpoints: (builder) => ({
     fetchExpertises: builder.query<Expertise[], void>({
       query: () => '/expertises',
+      transformResponse: (response: Expertise[]) => response ?? [],
       providesTags: (result) =>
         result
           ? [
@@ -17,10 +18,12 @@ export const expertisesApi = createApi({
             ]
           : [{ type: 'Expertise', id: 'LIST' }],
     }),
+
     fetchExpertiseById: builder.query<Expertise, number>({
       query: (expertiseId) => `/expertises/expertise/${expertiseId}`,
       providesTags: (_result, _error, id) => [{ type: 'Expertise', id }],
     }),
+
     createExpertise: builder.mutation<Expertise, NewExpertise>({
       query: (expertise) => ({
         url: '/expertises',
@@ -29,20 +32,28 @@ export const expertisesApi = createApi({
       }),
       invalidatesTags: [{ type: 'Expertise', id: 'LIST' }],
     }),
+
     updateExpertise: builder.mutation<Expertise, UpdatedExpertise>({
       query: (expertise) => ({
         url: `/expertises/expertise/${expertise.id}`,
         method: 'PUT',
         body: expertise,
       }),
-      invalidatesTags: (_result, _error, { id }) => [{ type: 'Expertise', id }],
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: 'Expertise', id },
+        { type: 'Expertise', id: 'LIST' },
+      ],
     }),
+
     deleteExpertise: builder.mutation<void, number>({
       query: (expertiseId) => ({
         url: `/expertises/expertise/${expertiseId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (_result, _error, id) => [{ type: 'Expertise', id }],
+      invalidatesTags: (_result, _error, id) => [
+        { type: 'Expertise', id },
+        { type: 'Expertise', id: 'LIST' },
+      ],
     }),
   }),
 });

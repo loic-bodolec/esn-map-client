@@ -13,17 +13,13 @@ export const consultantsApi = createApi({
     >({
       query: ({ technoIds = [], workIds = [], clientIds = [] }) => {
         const params = new URLSearchParams();
-        if (technoIds.length > 0) {
-          technoIds.forEach((id) => params.append('technoIds', id.toString()));
-        }
-        if (workIds.length > 0) {
-          workIds.forEach((id) => params.append('workIds', id.toString()));
-        }
-        if (clientIds.length > 0) {
-          clientIds.forEach((id) => params.append('clientIds', id.toString()));
-        }
-        return { url: '/consultants', params };
+        technoIds.forEach((id) => params.append('technoIds', id.toString()));
+        workIds.forEach((id) => params.append('workIds', id.toString()));
+        clientIds.forEach((id) => params.append('clientIds', id.toString()));
+
+        return { url: `/consultants?${params.toString()}` };
       },
+      transformResponse: (response: Consultant[]) => response ?? [],
       providesTags: (result) =>
         result
           ? [
@@ -32,10 +28,12 @@ export const consultantsApi = createApi({
             ]
           : [{ type: 'Consultant', id: 'LIST' }],
     }),
+
     fetchConsultantById: builder.query<Consultant, number>({
       query: (consultantId) => `/consultants/consultant/${consultantId}`,
       providesTags: (_result, _error, id) => [{ type: 'Consultant', id }],
     }),
+
     createConsultant: builder.mutation<Consultant, NewConsultant>({
       query: (consultant) => ({
         url: '/consultants/consultant',
@@ -44,20 +42,28 @@ export const consultantsApi = createApi({
       }),
       invalidatesTags: [{ type: 'Consultant', id: 'LIST' }],
     }),
+
     updateConsultant: builder.mutation<Consultant, UpdatedConsultant>({
       query: (consultant) => ({
         url: `/consultants/consultant/${consultant.id}`,
         method: 'PUT',
         body: consultant,
       }),
-      invalidatesTags: (_result, _error, { id }) => [{ type: 'Consultant', id }],
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: 'Consultant', id },
+        { type: 'Consultant', id: 'LIST' },
+      ],
     }),
+
     deleteConsultant: builder.mutation<void, number>({
       query: (consultantId) => ({
         url: `/consultants/consultant/${consultantId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (_result, _error, id) => [{ type: 'Consultant', id }],
+      invalidatesTags: (_result, _error, id) => [
+        { type: 'Consultant', id },
+        { type: 'Consultant', id: 'LIST' },
+      ],
     }),
   }),
 });

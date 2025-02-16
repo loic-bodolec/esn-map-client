@@ -9,6 +9,7 @@ export const technosApi = createApi({
   endpoints: (builder) => ({
     fetchTechnos: builder.query<Techno[], void>({
       query: () => '/technos',
+      transformResponse: (response: Techno[]) => response ?? [],
       providesTags: (result) =>
         result
           ? [
@@ -17,10 +18,12 @@ export const technosApi = createApi({
             ]
           : [{ type: 'Techno', id: 'LIST' }],
     }),
+
     fetchTechnoById: builder.query<Techno, number>({
       query: (technoId) => `/technos/techno/${technoId}`,
       providesTags: (_result, _error, id) => [{ type: 'Techno', id }],
     }),
+
     createTechno: builder.mutation<Techno, NewTechno>({
       query: (techno) => ({
         url: '/technos/techno',
@@ -29,20 +32,28 @@ export const technosApi = createApi({
       }),
       invalidatesTags: [{ type: 'Techno', id: 'LIST' }],
     }),
+
     updateTechno: builder.mutation<Techno, UpdatedTechno>({
       query: (techno) => ({
         url: `/technos/techno/${techno.id}`,
         method: 'PUT',
         body: techno,
       }),
-      invalidatesTags: (_result, _error, { id }) => [{ type: 'Techno', id }],
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: 'Techno', id },
+        { type: 'Techno', id: 'LIST' },
+      ],
     }),
+
     deleteTechno: builder.mutation<void, number>({
       query: (technoId) => ({
         url: `/technos/techno/${technoId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (_result, _error, id) => [{ type: 'Techno', id }],
+      invalidatesTags: (_result, _error, id) => [
+        { type: 'Techno', id },
+        { type: 'Techno', id: 'LIST' },
+      ],
     }),
   }),
 });

@@ -9,6 +9,7 @@ export const worksApi = createApi({
   endpoints: (builder) => ({
     fetchWorks: builder.query<Work[], void>({
       query: () => '/works',
+      transformResponse: (response: Work[] | null) => response ?? [],
       providesTags: (result) =>
         result
           ? [
@@ -17,10 +18,12 @@ export const worksApi = createApi({
             ]
           : [{ type: 'Work', id: 'LIST' }],
     }),
+
     fetchWorkById: builder.query<Work, number>({
       query: (workId) => `/works/work/${workId}`,
       providesTags: (_result, _error, id) => [{ type: 'Work', id }],
     }),
+
     createWork: builder.mutation<Work, NewWork>({
       query: (work) => ({
         url: '/works/work',
@@ -29,20 +32,28 @@ export const worksApi = createApi({
       }),
       invalidatesTags: [{ type: 'Work', id: 'LIST' }],
     }),
+
     updateWork: builder.mutation<Work, UpdatedWork>({
       query: (work) => ({
         url: `/works/work/${work.id}`,
         method: 'PUT',
         body: work,
       }),
-      invalidatesTags: (_result, _error, { id }) => [{ type: 'Work', id }],
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: 'Work', id },
+        { type: 'Work', id: 'LIST' },
+      ],
     }),
+
     deleteWork: builder.mutation<void, number>({
       query: (workId) => ({
         url: `/works/work/${workId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (_result, _error, id) => [{ type: 'Work', id }],
+      invalidatesTags: (_result, _error, id) => [
+        { type: 'Work', id },
+        { type: 'Work', id: 'LIST' },
+      ],
     }),
   }),
 });

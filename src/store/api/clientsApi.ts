@@ -10,14 +10,12 @@ export const clientsApi = createApi({
     fetchClients: builder.query<Client[], { jobIds?: number[]; expertiseIds?: number[] }>({
       query: ({ jobIds = [], expertiseIds = [] }) => {
         const params = new URLSearchParams();
-        if (jobIds.length > 0) {
-          jobIds.forEach((id) => params.append('jobIds', id.toString()));
-        }
-        if (expertiseIds.length > 0) {
-          expertiseIds.forEach((id) => params.append('expertiseIds', id.toString()));
-        }
-        return { url: '/clients', params };
+        jobIds.forEach((id) => params.append('jobIds', id.toString()));
+        expertiseIds.forEach((id) => params.append('expertiseIds', id.toString()));
+
+        return { url: `/clients?${params.toString()}` };
       },
+      transformResponse: (response: Client[]) => response ?? [],
       providesTags: (result) =>
         result
           ? [
@@ -26,10 +24,12 @@ export const clientsApi = createApi({
             ]
           : [{ type: 'Client', id: 'LIST' }],
     }),
+
     fetchClientById: builder.query<Client, number>({
       query: (clientId) => `/clients/client/${clientId}`,
       providesTags: (_result, _error, id) => [{ type: 'Client', id }],
     }),
+
     createClient: builder.mutation<Client, NewClient>({
       query: (client) => ({
         url: '/clients/client',
@@ -38,20 +38,28 @@ export const clientsApi = createApi({
       }),
       invalidatesTags: [{ type: 'Client', id: 'LIST' }],
     }),
+
     updateClient: builder.mutation<Client, UpdatedClient>({
       query: (client) => ({
         url: `/clients/client/${client.id}`,
         method: 'PUT',
         body: client,
       }),
-      invalidatesTags: (_result, _error, { id }) => [{ type: 'Client', id }],
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: 'Client', id },
+        { type: 'Client', id: 'LIST' },
+      ],
     }),
-    deleteClient: builder.mutation<number, number>({
+
+    deleteClient: builder.mutation<void, number>({
       query: (clientId) => ({
         url: `/clients/client/${clientId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (_result, _error, id) => [{ type: 'Client', id }],
+      invalidatesTags: (_result, _error, id) => [
+        { type: 'Client', id },
+        { type: 'Client', id: 'LIST' },
+      ],
     }),
   }),
 });
