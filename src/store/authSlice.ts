@@ -1,6 +1,11 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { loginAPI } from '../api/authApi';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { authApi } from '../api/authApi';
+
+interface LoginResponse {
+  username: string;
+  role: string;
+  token: string;
+}
 
 interface User {
   username: string;
@@ -21,34 +26,6 @@ const initialState: AuthState = {
   error: null,
 };
 
-interface Credentials {
-  username: string;
-  password: string;
-}
-
-interface LoginResponse {
-  message: string;
-  username: string;
-  role: string;
-  token: string;
-}
-
-export const login = createAsyncThunk<LoginResponse, Credentials, { rejectValue: string }>(
-  'auth/login',
-  async (credentials, { rejectWithValue }) => {
-    try {
-      const response = await loginAPI(credentials);
-      return response;
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.data) {
-        return rejectWithValue(error.response.data.message || 'Login failed');
-      } else {
-        return rejectWithValue('Network error');
-      }
-    }
-  },
-);
-
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -61,23 +38,26 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(login.pending, (state) => {
+      .addMatcher(authApi.endpoints.login.matchPending, (state) => {
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(login.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
-        state.status = 'succeeded';
-        state.user = {
-          username: action.payload.username,
-          role: action.payload.role,
-        };
-        state.token = action.payload.token;
-        sessionStorage.setItem('user', JSON.stringify(state.user));
-        sessionStorage.setItem('token', state.token);
-      })
-      .addCase(login.rejected, (state, action) => {
+      .addMatcher(
+        authApi.endpoints.login.matchFulfilled,
+        (state, action: PayloadAction<LoginResponse>) => {
+          state.status = 'succeeded';
+          state.user = {
+            username: action.payload.username,
+            role: action.payload.role,
+          };
+          state.token = action.payload.token;
+          sessionStorage.setItem('user', JSON.stringify(state.user));
+          sessionStorage.setItem('token', state.token);
+        },
+      )
+      .addMatcher(authApi.endpoints.login.matchRejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.payload ?? 'Unknown error';
+        state.error = action.error?.message ?? 'Unknown error';
       });
   },
 });

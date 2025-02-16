@@ -1,10 +1,8 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../store/authSlice';
-import { AppDispatch, RootState } from '../../store/store';
+import { useLoginMutation } from '../../api/authApi';
 import logo from '../../assets/logo-codeforge.webp';
 import './Login.scss';
 
@@ -14,15 +12,22 @@ const Login: React.FC = () => {
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
-  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { status, error } = useSelector((state: RootState) => state.auth);
+  const [login, { isLoading, error }] = useLoginMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await dispatch(login(credentials));
-    if (login.fulfilled.match(result)) {
+    try {
+      const result = await login(credentials).unwrap();
+      // Stockez le token et l'utilisateur dans le sessionStorage
+      sessionStorage.setItem(
+        'user',
+        JSON.stringify({ username: result.username, role: result.role }),
+      );
+      sessionStorage.setItem('token', result.token);
       navigate('/carte');
+    } catch (err) {
+      console.error('Failed to login:', err);
     }
   };
 
@@ -89,14 +94,14 @@ const Login: React.FC = () => {
           variant='contained'
           color='primary'
           className='login-button'
-          disabled={status === 'loading'}
+          disabled={isLoading}
           data-testid='submit-button'
         >
-          {status === 'loading' ? 'Connexion...' : 'Se connecter'}
+          {isLoading ? 'Connexion...' : 'Se connecter'}
         </Button>
-        {error && typeof error === 'string' && (
+        {error && 'data' in error && typeof error.data === 'string' && (
           <Typography color='error' data-testid='error-message'>
-            {error}
+            {error.data}
           </Typography>
         )}
       </form>

@@ -11,25 +11,41 @@ import {
   SelectChangeEvent,
   Typography,
 } from '@mui/material';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { memo, useCallback, useMemo, useState } from 'react';
 import ClientCard from '../../Components/ClientCard/ClientCard';
 import ConfirmDeleteModal from '../../Components/ConfirmDeleteModal/ConfirmDeleteModal';
 import NewClientModal from '../../Components/NewClientModal/NewClientModal';
 import UpdateClientModal from '../../Components/UpdateClientModal/UpdateClientModal';
-import { addClient, getClients, modifyClient, removeClient } from '../../store/clientsSlice';
-import { getExpertises } from '../../store/expertisesSlice';
-import { getJobs } from '../../store/jobsSlice';
-import { AppDispatch, RootState } from '../../store/store';
+import {
+  useFetchClientsQuery,
+  useCreateClientMutation,
+  useUpdateClientMutation,
+  useDeleteClientMutation,
+} from '../../api/clientsApi';
+import { useFetchExpertisesQuery } from '../../api/expertisesApi';
+import { useFetchJobsQuery } from '../../api/jobsApi';
+import { RootState } from '../../store/store';
 import { Client, NewClient, UpdatedClient } from '../../types/Client';
 import './Clients.scss';
+import { useSelector } from 'react-redux';
 
 const Clients: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { clients, status, error } = useSelector((state: RootState) => state.clients);
-  const { jobs } = useSelector((state: RootState) => state.jobs);
-  const { expertises } = useSelector((state: RootState) => state.expertises);
   const userRole = useSelector((state: RootState) => state.auth.user?.role);
+
+  // State for filters
+  const [selectedJobIds, setSelectedJobIds] = useState<number[]>([]);
+  const [selectedExpertiseIds, setSelectedExpertiseIds] = useState<number[]>([]);
+
+  const {
+    data: clients = [],
+    error: clientsError,
+    isLoading: clientsLoading,
+  } = useFetchClientsQuery({ jobIds: selectedJobIds, expertiseIds: selectedExpertiseIds });
+  const { data: jobs = [] } = useFetchJobsQuery();
+  const { data: expertises = [] } = useFetchExpertisesQuery();
+  const [createClient] = useCreateClientMutation();
+  const [updateClient] = useUpdateClientMutation();
+  const [deleteClient] = useDeleteClientMutation();
 
   // State for managing modals
   const [modalOpen, setModalOpen] = useState(false);
@@ -38,24 +54,9 @@ const Clients: React.FC = () => {
   const [clientToDelete, setClientToDelete] = useState<Client | null>(null);
   const [clientToUpdate, setClientToUpdate] = useState<Client | null>(null);
 
-  // State for filters
-  const [selectedJobIds, setSelectedJobIds] = useState<number[]>([]);
-  const [selectedExpertiseIds, setSelectedExpertiseIds] = useState<number[]>([]);
-
   // Temporary state for filters
   const [tempJobIds, setTempJobIds] = useState<number[]>([]);
   const [tempExpertiseIds, setTempExpertiseIds] = useState<number[]>([]);
-
-  // Fetch jobs and expertises when the component mounts
-  useEffect(() => {
-    dispatch(getJobs());
-    dispatch(getExpertises());
-  }, [dispatch]);
-
-  // Fetch clients when filters change
-  useEffect(() => {
-    dispatch(getClients({ jobIds: selectedJobIds, expertiseIds: selectedExpertiseIds }));
-  }, [dispatch, selectedJobIds, selectedExpertiseIds]);
 
   // Handlers for opening and closing modals
   const handleOpenModal = useCallback(() => {
@@ -89,21 +90,21 @@ const Clients: React.FC = () => {
   // Handlers for CRUD operations
   const handleDeleteClient = useCallback(async () => {
     if (clientToDelete) {
-      dispatch(removeClient(clientToDelete.id));
+      await deleteClient(clientToDelete.id);
       handleCloseConfirmModal();
     }
-  }, [clientToDelete, dispatch, handleCloseConfirmModal]);
+  }, [clientToDelete, deleteClient, handleCloseConfirmModal]);
 
   const handleUpdateClient = useCallback(
     async (updatedClient: UpdatedClient) => {
-      dispatch(modifyClient(updatedClient));
+      await updateClient(updatedClient);
       handleCloseUpdateModal();
     },
-    [dispatch, handleCloseUpdateModal],
+    [updateClient, handleCloseUpdateModal],
   );
 
   const handleCreateClient = async (newClient: NewClient) => {
-    dispatch(addClient(newClient));
+    await createClient(newClient);
     handleCloseModal();
   };
 
@@ -145,12 +146,12 @@ const Clients: React.FC = () => {
     ));
   }, [expertises]);
 
-  if (status === 'loading') {
+  if (clientsLoading) {
     return <CircularProgress />;
   }
 
-  if (status === 'failed') {
-    return <Typography color='error'>{error}</Typography>;
+  if (clientsError) {
+    return <Typography color='error'>{JSON.stringify(clientsError)}</Typography>;
   }
 
   return (

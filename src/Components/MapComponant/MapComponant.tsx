@@ -10,13 +10,11 @@ import {
   Typography,
 } from '@mui/material';
 import { DivIcon, LatLngExpression } from 'leaflet';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
-import { useDispatch, useSelector } from 'react-redux';
-import { getClients } from '../../store/clientsSlice';
-import { getExpertises } from '../../store/expertisesSlice';
-import { getJobs } from '../../store/jobsSlice';
-import { AppDispatch, RootState } from '../../store/store';
+import { useFetchClientsQuery } from '../../api/clientsApi';
+import { useFetchExpertisesQuery } from '../../api/expertisesApi';
+import { useFetchJobsQuery } from '../../api/jobsApi';
 import './MapComponant.scss';
 
 // Create a new marker icon
@@ -39,12 +37,6 @@ const createCustomMarkerIcon = (name: string, iconUrl?: string) =>
   });
 
 const MapComponent: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { clients, status, error } = useSelector((state: RootState) => state.clients);
-  const { jobs } = useSelector((state: RootState) => state.jobs);
-  const { expertises } = useSelector((state: RootState) => state.expertises);
-
-  // State for filters
   const [selectedJobIds, setSelectedJobIds] = useState<number[]>([]);
   const [selectedExpertiseIds, setSelectedExpertiseIds] = useState<number[]>([]);
 
@@ -52,14 +44,16 @@ const MapComponent: React.FC = () => {
   const [tempJobIds, setTempJobIds] = useState<number[]>([]);
   const [tempExpertiseIds, setTempExpertiseIds] = useState<number[]>([]);
 
-  useEffect(() => {
-    dispatch(getJobs());
-    dispatch(getExpertises());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(getClients({ jobIds: selectedJobIds, expertiseIds: selectedExpertiseIds }));
-  }, [dispatch, selectedJobIds, selectedExpertiseIds]);
+  const { data: jobs = [] } = useFetchJobsQuery();
+  const { data: expertises = [] } = useFetchExpertisesQuery();
+  const {
+    data: clients = [],
+    error,
+    isLoading,
+  } = useFetchClientsQuery({
+    jobIds: selectedJobIds,
+    expertiseIds: selectedExpertiseIds,
+  });
 
   const handleTempJobChange = (event: SelectChangeEvent<number[]>) => {
     setTempJobIds(event.target.value as number[]);
@@ -97,12 +91,12 @@ const MapComponent: React.FC = () => {
     ));
   }, [expertises]);
 
-  if (status === 'loading') {
+  if (isLoading) {
     return <CircularProgress />;
   }
 
-  if (status === 'failed') {
-    return <Typography color='error'>{error}</Typography>;
+  if (error) {
+    return <Typography color='error'>{JSON.stringify(error)}</Typography>;
   }
 
   return (

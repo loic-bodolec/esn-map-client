@@ -11,10 +11,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getExpertises } from '../../store/expertisesSlice';
-import { getJobs } from '../../store/jobsSlice';
-import { AppDispatch, RootState } from '../../store/store';
+import { useFetchExpertisesQuery } from '../../api/expertisesApi';
+import { useFetchJobsQuery } from '../../api/jobsApi';
 import { Client, UpdatedClient } from '../../types/Client';
 
 interface UpdateClientModalProps {
@@ -30,9 +28,8 @@ const UpdateClientModal: React.FC<UpdateClientModalProps> = ({
   client,
   onUpdate,
 }) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { expertises } = useSelector((state: RootState) => state.expertises);
-  const { jobs } = useSelector((state: RootState) => state.jobs);
+  const { data: expertises = [] } = useFetchExpertisesQuery();
+  const { data: jobs = [] } = useFetchJobsQuery();
 
   const [name, setName] = useState('');
   const [activity, setActivity] = useState('');
@@ -43,11 +40,6 @@ const UpdateClientModal: React.FC<UpdateClientModalProps> = ({
   const [longitude, setLongitude] = useState<string>('');
   const [logo, setLogo] = useState('');
   const [link, setLink] = useState<string>('');
-
-  useEffect(() => {
-    dispatch(getExpertises());
-    dispatch(getJobs());
-  }, [dispatch]);
 
   useEffect(() => {
     if (client) {
@@ -79,6 +71,7 @@ const UpdateClientModal: React.FC<UpdateClientModalProps> = ({
       };
 
       onUpdate(updatedClient);
+      onClose();
     }
   };
 
