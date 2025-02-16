@@ -1,23 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Techno } from '../types/Techno';
+import { Job } from '../../types/Job';
 
-interface TechnosState {
-  technos: Techno[];
+interface JobsState {
+  jobs: Job[];
+  jobDetails: Job | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
 
-const initialState: TechnosState = {
-  technos: [],
+const initialState: JobsState = {
+  jobs: [],
+  jobDetails: null,
   status: 'idle',
   error: null,
 };
 
-const technosSlice = createSlice({
-  name: 'technos',
+const jobsSlice = createSlice({
+  name: 'jobs',
   initialState,
   reducers: {
-    resetTechnos(state) {
+    resetJobs(state) {
       Object.assign(state, initialState);
     },
   },
@@ -26,5 +28,5 @@ const technosSlice = createSlice({
   },
 });
 
-export const { resetTechnos } = technosSlice.actions;
-export default technosSlice.reducer;
+export const { resetJobs } = jobsSlice.actions;
+export default jobsSlice.reducer;

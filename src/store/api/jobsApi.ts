@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQuery from '../api/baseQuery';
-import { Job, NewJob, UpdatedJob } from '../types/Job';
+import baseQuery from './baseQuery';
+import { Job, NewJob, UpdatedJob } from '../../types/Job';
 
 export const jobsApi = createApi({
   reducerPath: 'jobsApi',

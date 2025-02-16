@@ -2,7 +2,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLoginMutation } from '../../api/authApi';
+import { useLoginMutation } from '../../store/api/authApi';
 import logo from '../../assets/logo-codeforge.webp';
 import './Login.scss';
 

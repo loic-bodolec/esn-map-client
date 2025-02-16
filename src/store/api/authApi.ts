@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQuery from '../api/baseQuery';
+import baseQuery from './baseQuery';
 
 interface Credentials {
   username: string;

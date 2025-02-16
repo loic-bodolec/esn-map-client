@@ -1,23 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { User } from '../types/User';
+import { Techno } from '../../types/Techno';
 
-interface UsersState {
-  users: User[];
+interface TechnosState {
+  technos: Techno[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
 
-const initialState: UsersState = {
-  users: [],
+const initialState: TechnosState = {
+  technos: [],
   status: 'idle',
   error: null,
 };
 
-const usersSlice = createSlice({
-  name: 'users',
+const technosSlice = createSlice({
+  name: 'technos',
   initialState,
   reducers: {
-    resetUsers(state) {
+    resetTechnos(state) {
       Object.assign(state, initialState);
     },
   },
@@ -26,5 +26,5 @@ const usersSlice = createSlice({
   },
 });
 
-export const { resetUsers } = usersSlice.actions;
-export default usersSlice.reducer;
+export const { resetTechnos } = technosSlice.actions;
+export default technosSlice.reducer;

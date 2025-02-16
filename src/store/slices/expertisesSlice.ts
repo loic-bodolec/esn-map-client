@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Expertise } from '../types/Expertise';
+import { Expertise } from '../../types/Expertise';
 
 interface ExpertisesState {
   expertises: Expertise[];

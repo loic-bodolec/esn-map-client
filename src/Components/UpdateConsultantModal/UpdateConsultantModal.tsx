@@ -11,9 +11,9 @@ import {
   Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useFetchClientsQuery } from '../../api/clientsApi';
-import { useFetchTechnosQuery } from '../../api/technosApi';
-import { useFetchWorksQuery } from '../../api/worksApi';
+import { useFetchClientsQuery } from '../../store/api/clientsApi';
+import { useFetchTechnosQuery } from '../../store/api/technosApi';
+import { useFetchWorksQuery } from '../../store/api/worksApi';
 import { Consultant, UpdatedConsultant } from '../../types/Consultant';
 
 interface UpdateConsultantModalProps {

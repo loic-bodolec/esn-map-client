@@ -9,7 +9,7 @@ import {
   useCreateUserMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,
-} from '../../api/usersApi';
+} from '../../store/api/usersApi';
 import { RootState } from '../../store/store';
 import { NewUser, UpdatedUser, User } from '../../types/User';
 import './Users.scss';

@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQuery from '../api/baseQuery';
-import { NewWork, UpdatedWork, Work } from '../types/Work';
+import baseQuery from './baseQuery';
+import { NewWork, UpdatedWork, Work } from '../../types/Work';
 
 export const worksApi = createApi({
   reducerPath: 'worksApi',
