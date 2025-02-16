@@ -12,9 +12,9 @@ import {
   Typography,
 } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
-import { fetchClients } from '../../api/clients';
-import { fetchTechnos } from '../../api/technos';
-import { fetchWorks } from '../../api/works';
+import { useFetchClientsQuery } from '../../api/clientsApi';
+import { useFetchTechnosQuery } from '../../api/technosApi';
+import { useFetchWorksQuery } from '../../api/worksApi';
 import { NewConsultant } from '../../types/Consultant';
 
 interface NewConsultantModalProps {
@@ -29,24 +29,13 @@ const NewConsultantModal: React.FC<NewConsultantModalProps> = ({ open, onClose, 
   const [technoIds, setTechnoIds] = useState<number[]>([]);
   const [clientId, setClientId] = useState<number | null>(null);
   const [workId, setWorkId] = useState<number | null>(null);
-  const [technos, setTechnos] = useState<{ id: number; technoName: string }[]>([]);
-  const [clients, setClients] = useState<{ id: number; name: string }[]>([]);
-  const [works, setWorks] = useState<{ id: number; workName: string }[]>([]);
+
+  const { data: technos = [] } = useFetchTechnosQuery();
+  const { data: clients = [] } = useFetchClientsQuery({});
+  const { data: works = [] } = useFetchWorksQuery();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const [technosData, clientsData, worksData] = await Promise.all([
-        fetchTechnos(),
-        fetchClients({}),
-        fetchWorks(),
-      ]);
-      setTechnos(technosData);
-      setClients(clientsData);
-      setWorks(worksData);
-    };
-
     if (open) {
-      fetchData();
       // Reset form fields when the modal opens
       setFirstname('');
       setLastname('');

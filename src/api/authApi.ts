@@ -1,4 +1,5 @@
-import axiosInstance from './axiosInstance';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import baseQuery from '../api/baseQuery';
 
 interface Credentials {
   username: string;
@@ -12,7 +13,18 @@ interface LoginResponse {
   token: string;
 }
 
-export const loginAPI = async (credentials: Credentials): Promise<LoginResponse> => {
-  const response = await axiosInstance.post<LoginResponse>('/auth/login', credentials);
-  return response.data;
-};
+export const authApi = createApi({
+  reducerPath: 'authApi',
+  baseQuery: baseQuery,
+  endpoints: (builder) => ({
+    login: builder.mutation<LoginResponse, Credentials>({
+      query: (credentials) => ({
+        url: 'auth/login',
+        method: 'POST',
+        body: credentials,
+      }),
+    }),
+  }),
+});
+
+export const { useLoginMutation } = authApi;

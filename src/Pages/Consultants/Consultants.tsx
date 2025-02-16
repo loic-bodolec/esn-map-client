@@ -11,8 +11,7 @@ import {
   SelectChangeEvent,
   Typography,
 } from '@mui/material';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { memo, useCallback, useMemo, useState } from 'react';
 import ConfirmDeleteModal from '../../Components/ConfirmDeleteModal/ConfirmDeleteModal';
 import ConsultantCard from '../../Components/ConsultantCard/ConsultantCard';
 import NewConsultantModal from '../../Components/NewConsultantModal/NewConsultantModal';
@@ -23,45 +22,68 @@ import UpdateConsultantModal from '../../Components/UpdateConsultantModal/Update
 import UpdateTechnoModal from '../../Components/UpdateTechnoModal/UpdateTechnoModal';
 import UpdateWorkModal from '../../Components/UpdateWorkModal/UpdateWorkModal';
 import WorkCard from '../../Components/WorkCard/WorkCard';
-import { getClients } from '../../store/clientsSlice';
 import {
-  addConsultant,
-  getConsultants,
-  modifyConsultant,
-  removeConsultant,
-} from '../../store/consultantsSlice';
-import { AppDispatch, RootState } from '../../store/store';
-import { addTechno, getTechnos, modifyTechno, removeTechno } from '../../store/technosSlice';
-import { addWork, getWorks, modifyWork, removeWork } from '../../store/worksSlice';
+  useFetchConsultantsQuery,
+  useCreateConsultantMutation,
+  useUpdateConsultantMutation,
+  useDeleteConsultantMutation,
+} from '../../api/consultantsApi';
+import {
+  useFetchTechnosQuery,
+  useCreateTechnoMutation,
+  useUpdateTechnoMutation,
+  useDeleteTechnoMutation,
+} from '../../api/technosApi';
+import {
+  useFetchWorksQuery,
+  useCreateWorkMutation,
+  useUpdateWorkMutation,
+  useDeleteWorkMutation,
+} from '../../api/worksApi';
+import { useFetchClientsQuery } from '../../api/clientsApi';
 import { Consultant, NewConsultant, UpdatedConsultant } from '../../types/Consultant';
 import { NewTechno, Techno, UpdatedTechno } from '../../types/Techno';
 import { NewWork, UpdatedWork, Work } from '../../types/Work';
 import './Consultants.scss';
+import { RootState } from '../../store/store';
+import { useSelector } from 'react-redux';
 
 const Consultants: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const userRole = useSelector((state: RootState) => state.auth.user?.role);
-  const {
-    consultants,
-    status: consultantsStatus,
-    error: consultantsError,
-  } = useSelector((state: RootState) => state.consultants);
-  const {
-    technos,
-    status: technosStatus,
-    error: technosError,
-  } = useSelector((state: RootState) => state.technos);
-  const {
-    works,
-    status: worksStatus,
-    error: worksError,
-  } = useSelector((state: RootState) => state.works);
-  const { clients } = useSelector((state: RootState) => state.clients);
 
   // State for filters
   const [selectedTechnoIds, setSelectedTechnoIds] = useState<number[]>([]);
   const [selectedWorkIds, setSelectedWorkIds] = useState<number[]>([]);
   const [selectedClientIds, setSelectedClientIds] = useState<number[]>([]);
+
+  const {
+    data: consultants = [],
+    error: consultantsError,
+    isLoading: consultantsLoading,
+  } = useFetchConsultantsQuery({
+    technoIds: selectedTechnoIds,
+    workIds: selectedWorkIds,
+    clientIds: selectedClientIds,
+  });
+  const {
+    data: technos = [],
+    error: technosError,
+    isLoading: technosLoading,
+  } = useFetchTechnosQuery();
+  const { data: works = [], error: worksError, isLoading: worksLoading } = useFetchWorksQuery();
+  const { data: clients = [] } = useFetchClientsQuery({ jobIds: [], expertiseIds: [] });
+
+  const [createConsultant] = useCreateConsultantMutation();
+  const [updateConsultant] = useUpdateConsultantMutation();
+  const [deleteConsultant] = useDeleteConsultantMutation();
+
+  const [createTechno] = useCreateTechnoMutation();
+  const [updateTechno] = useUpdateTechnoMutation();
+  const [deleteTechno] = useDeleteTechnoMutation();
+
+  const [createWork] = useCreateWorkMutation();
+  const [updateWork] = useUpdateWorkMutation();
+  const [deleteWork] = useDeleteWorkMutation();
 
   // Temporary state for filters
   const [tempTechnoIds, setTempTechnoIds] = useState<number[]>([]);
@@ -80,24 +102,6 @@ const Consultants: React.FC = () => {
   const [technoToUpdate, setTechnoToUpdate] = useState<Techno | null>(null);
   const [workToUpdate, setWorkToUpdate] = useState<Work | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
-
-  useEffect(() => {
-    dispatch(getConsultants({}));
-    dispatch(getTechnos());
-    dispatch(getWorks());
-    dispatch(getClients({}));
-  }, [dispatch]);
-
-  // Fetch consultants when filters change
-  useEffect(() => {
-    dispatch(
-      getConsultants({
-        technoIds: selectedTechnoIds,
-        workIds: selectedWorkIds,
-        clientIds: selectedClientIds,
-      }),
-    );
-  }, [dispatch, selectedTechnoIds, selectedWorkIds, selectedClientIds]);
 
   // Handlers for filters
   const handleTempTechnoChange = (event: SelectChangeEvent<number[]>) => {
@@ -196,13 +200,12 @@ const Consultants: React.FC = () => {
     if (entityToDelete) {
       try {
         if ('firstname' in entityToDelete) {
-          await dispatch(removeConsultant(entityToDelete.id)).unwrap();
+          await deleteConsultant(entityToDelete.id);
         } else if ('technoName' in entityToDelete) {
-          await dispatch(removeTechno(entityToDelete.id)).unwrap();
+          await deleteTechno(entityToDelete.id);
         } else if ('workName' in entityToDelete) {
-          await dispatch(removeWork(entityToDelete.id)).unwrap();
+          await deleteWork(entityToDelete.id);
         }
-        dispatch(getConsultants({})); // Re-fetch consultants after deletion
         handleCloseConfirmModal();
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -212,62 +215,56 @@ const Consultants: React.FC = () => {
         }
       }
     }
-  }, [entityToDelete, dispatch, handleCloseConfirmModal]);
+  }, [entityToDelete, deleteConsultant, deleteTechno, deleteWork, handleCloseConfirmModal]);
 
   const handleUpdateConsultant = useCallback(
     async (updatedConsultant: UpdatedConsultant) => {
-      dispatch(modifyConsultant(updatedConsultant));
+      await updateConsultant(updatedConsultant);
       handleCloseUpdateModal();
     },
-    [dispatch, handleCloseUpdateModal],
+    [updateConsultant, handleCloseUpdateModal],
   );
 
   const handleUpdateTechno = async (updatedTechno: UpdatedTechno) => {
-    await dispatch(modifyTechno(updatedTechno));
-    dispatch(getConsultants({})); // Re-fetch consultants after updating a techno
+    await updateTechno(updatedTechno);
     handleCloseUpdateTechnoModal();
   };
 
   const handleUpdateWork = async (updatedWork: UpdatedWork) => {
-    await dispatch(modifyWork(updatedWork));
-    dispatch(getConsultants({})); // Re-fetch consultants after updating a work
+    await updateWork(updatedWork);
     handleCloseUpdateWorkModal();
   };
 
   const handleCreateConsultant = async (newConsultant: NewConsultant) => {
-    dispatch(addConsultant(newConsultant));
+    await createConsultant(newConsultant);
     handleCloseModal();
   };
 
   const handleCreateTechno = async (newTechno: NewTechno) => {
-    dispatch(addTechno(newTechno));
+    await createTechno(newTechno);
     handleCloseTechnoModal();
   };
 
   const handleCreateWork = async (newWork: NewWork) => {
-    dispatch(addWork(newWork));
+    await createWork(newWork);
     handleCloseWorkModal();
   };
 
   const renderLoadingOrError = () => {
-    if (
-      consultantsStatus === 'loading' ||
-      technosStatus === 'loading' ||
-      worksStatus === 'loading'
-    ) {
+    if (consultantsLoading || technosLoading || worksLoading) {
       return <CircularProgress />;
     }
 
-    if (consultantsStatus === 'failed') {
-      return <Typography color='error'>{consultantsError}</Typography>;
+    if (consultantsError) {
+      return <Typography color='error'>{JSON.stringify(consultantsError)}</Typography>;
     }
 
-    if (technosStatus === 'failed') {
-      return <Typography color='error'>{technosError}</Typography>;
+    if (technosError) {
+      return <Typography color='error'>{JSON.stringify(technosError)}</Typography>;
     }
 
-    if (worksStatus === 'failed') {
-      return <Typography color='error'>{worksError}</Typography>;
+    if (worksError) {
+      return <Typography color='error'>{JSON.stringify(worksError)}</Typography>;
     }
 
     return null;
