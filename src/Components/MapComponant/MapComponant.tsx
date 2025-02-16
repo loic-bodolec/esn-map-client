@@ -12,6 +12,7 @@ import {
 import { DivIcon, LatLngExpression } from 'leaflet';
 import { useMemo, useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { Link } from 'react-router-dom';
 import { useFetchClientsQuery } from '../../api/clientsApi';
 import { useFetchExpertisesQuery } from '../../api/expertisesApi';
 import { useFetchJobsQuery } from '../../api/jobsApi';
@@ -190,17 +191,12 @@ const MapComponent: React.FC = () => {
                 )}
                 <Button
                   className='popup-details-button'
-                  variant='contained'
-                  color='primary'
+                  variant='outlined'
+                  component={Link}
                   size='small'
+                  to={`/client-details/${client.id}`}
                 >
-                  <a
-                    href={`/client-details/${client.id}`}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  >
-                    Détails
-                  </a>
+                  Détails
                 </Button>
               </div>
             </Popup>
