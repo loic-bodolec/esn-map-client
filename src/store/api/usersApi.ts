@@ -19,7 +19,7 @@ export const usersApi = createApi({
     }),
     fetchUserById: builder.query<User, number>({
       query: (userId) => `/users/${userId}`,
-      providesTags: (result, error, id) => [{ type: 'User', id }],
+      providesTags: (_result, _error, id) => [{ type: 'User', id }],
     }),
     createUser: builder.mutation<User, NewUser>({
       query: (user) => ({
@@ -35,14 +35,14 @@ export const usersApi = createApi({
         method: 'PUT',
         body: user,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'User', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'User', id }],
     }),
     deleteUser: builder.mutation<number, number>({
       query: (userId) => ({
         url: `/users/user/${userId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, id) => [{ type: 'User', id }],
+      invalidatesTags: (_result, _error, id) => [{ type: 'User', id }],
     }),
   }),
 });

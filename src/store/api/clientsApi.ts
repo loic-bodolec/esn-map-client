@@ -28,7 +28,7 @@ export const clientsApi = createApi({
     }),
     fetchClientById: builder.query<Client, number>({
       query: (clientId) => `/clients/client/${clientId}`,
-      providesTags: (result, error, id) => [{ type: 'Client', id }],
+      providesTags: (_result, _error, id) => [{ type: 'Client', id }],
     }),
     createClient: builder.mutation<Client, NewClient>({
       query: (client) => ({
@@ -44,14 +44,14 @@ export const clientsApi = createApi({
         method: 'PUT',
         body: client,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Client', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Client', id }],
     }),
     deleteClient: builder.mutation<number, number>({
       query: (clientId) => ({
         url: `/clients/client/${clientId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, id) => [{ type: 'Client', id }],
+      invalidatesTags: (_result, _error, id) => [{ type: 'Client', id }],
     }),
   }),
 });

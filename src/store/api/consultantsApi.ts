@@ -34,7 +34,7 @@ export const consultantsApi = createApi({
     }),
     fetchConsultantById: builder.query<Consultant, number>({
       query: (consultantId) => `/consultants/consultant/${consultantId}`,
-      providesTags: (result, error, id) => [{ type: 'Consultant', id }],
+      providesTags: (_result, _error, id) => [{ type: 'Consultant', id }],
     }),
     createConsultant: builder.mutation<Consultant, NewConsultant>({
       query: (consultant) => ({
@@ -50,14 +50,14 @@ export const consultantsApi = createApi({
         method: 'PUT',
         body: consultant,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Consultant', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Consultant', id }],
     }),
     deleteConsultant: builder.mutation<void, number>({
       query: (consultantId) => ({
         url: `/consultants/consultant/${consultantId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, id) => [{ type: 'Consultant', id }],
+      invalidatesTags: (_result, _error, id) => [{ type: 'Consultant', id }],
     }),
   }),
 });

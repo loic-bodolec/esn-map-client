@@ -16,7 +16,7 @@ export const jobsApi = createApi({
     }),
     fetchJobById: builder.query<Job, number>({
       query: (jobId) => `/jobs/job/${jobId}`,
-      providesTags: (result, error, id) => [{ type: 'Job', id }],
+      providesTags: (_result, _error, id) => [{ type: 'Job', id }],
     }),
     createJob: builder.mutation<Job, NewJob>({
       query: (job) => ({
@@ -32,14 +32,14 @@ export const jobsApi = createApi({
         method: 'PUT',
         body: job,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Job', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Job', id }],
     }),
     deleteJob: builder.mutation<void, number>({
       query: (jobId) => ({
         url: `/jobs/job/${jobId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, id) => [{ type: 'Job', id }],
+      invalidatesTags: (_result, _error, id) => [{ type: 'Job', id }],
     }),
   }),
 });

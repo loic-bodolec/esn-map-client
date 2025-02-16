@@ -19,7 +19,7 @@ export const expertisesApi = createApi({
     }),
     fetchExpertiseById: builder.query<Expertise, number>({
       query: (expertiseId) => `/expertises/expertise/${expertiseId}`,
-      providesTags: (result, error, id) => [{ type: 'Expertise', id }],
+      providesTags: (_result, _error, id) => [{ type: 'Expertise', id }],
     }),
     createExpertise: builder.mutation<Expertise, NewExpertise>({
       query: (expertise) => ({
@@ -35,14 +35,14 @@ export const expertisesApi = createApi({
         method: 'PUT',
         body: expertise,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Expertise', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Expertise', id }],
     }),
     deleteExpertise: builder.mutation<void, number>({
       query: (expertiseId) => ({
         url: `/expertises/expertise/${expertiseId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, id) => [{ type: 'Expertise', id }],
+      invalidatesTags: (_result, _error, id) => [{ type: 'Expertise', id }],
     }),
   }),
 });

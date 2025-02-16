@@ -19,7 +19,7 @@ export const technosApi = createApi({
     }),
     fetchTechnoById: builder.query<Techno, number>({
       query: (technoId) => `/technos/techno/${technoId}`,
-      providesTags: (result, error, id) => [{ type: 'Techno', id }],
+      providesTags: (_result, _error, id) => [{ type: 'Techno', id }],
     }),
     createTechno: builder.mutation<Techno, NewTechno>({
       query: (techno) => ({
@@ -35,14 +35,14 @@ export const technosApi = createApi({
         method: 'PUT',
         body: techno,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Techno', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Techno', id }],
     }),
     deleteTechno: builder.mutation<void, number>({
       query: (technoId) => ({
         url: `/technos/techno/${technoId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, id) => [{ type: 'Techno', id }],
+      invalidatesTags: (_result, _error, id) => [{ type: 'Techno', id }],
     }),
   }),
 });

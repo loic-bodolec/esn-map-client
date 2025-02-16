@@ -19,7 +19,7 @@ export const worksApi = createApi({
     }),
     fetchWorkById: builder.query<Work, number>({
       query: (workId) => `/works/work/${workId}`,
-      providesTags: (result, error, id) => [{ type: 'Work', id }],
+      providesTags: (_result, _error, id) => [{ type: 'Work', id }],
     }),
     createWork: builder.mutation<Work, NewWork>({
       query: (work) => ({
@@ -35,14 +35,14 @@ export const worksApi = createApi({
         method: 'PUT',
         body: work,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Work', id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'Work', id }],
     }),
     deleteWork: builder.mutation<void, number>({
       query: (workId) => ({
         url: `/works/work/${workId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, id) => [{ type: 'Work', id }],
+      invalidatesTags: (_result, _error, id) => [{ type: 'Work', id }],
     }),
   }),
 });
