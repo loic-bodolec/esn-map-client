@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Fragment } from 'react/jsx-runtime';
 import logo from '../../assets/logo-codeforge.webp';
-import { logout } from '../../store/authSlice';
+import { logout } from '../../store/slices/authSlice';
 import { RootState } from '../../store/store';
 
 interface DrawerAppBarProps {

@@ -10,11 +10,9 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getExpertises } from '../../store/expertisesSlice';
-import { getJobs } from '../../store/jobsSlice';
-import { AppDispatch, RootState } from '../../store/store';
+import { useCallback, useMemo, useState } from 'react';
+import { useFetchExpertisesQuery } from '../../store/api/expertisesApi';
+import { useFetchJobsQuery } from '../../store/api/jobsApi';
 import { NewClient } from '../../types/Client';
 
 interface NewClientModalProps {
@@ -24,9 +22,8 @@ interface NewClientModalProps {
 }
 
 const NewClientModal: React.FC<NewClientModalProps> = ({ open, onClose, onCreate }) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { expertises } = useSelector((state: RootState) => state.expertises);
-  const { jobs } = useSelector((state: RootState) => state.jobs);
+  const { data: expertises = [] } = useFetchExpertisesQuery();
+  const { data: jobs = [] } = useFetchJobsQuery();
 
   // State for form fields
   const [name, setName] = useState('');
@@ -38,12 +35,6 @@ const NewClientModal: React.FC<NewClientModalProps> = ({ open, onClose, onCreate
   const [link, setLink] = useState<string | null>(null);
   const [expertiseIds, setExpertiseIds] = useState<number[]>([]);
   const [jobIds, setJobIds] = useState<number[]>([]);
-
-  // Fetch expertises and jobs when the component mounts
-  useEffect(() => {
-    dispatch(getExpertises());
-    dispatch(getJobs());
-  }, [dispatch]);
 
   // Handler for form submission
   const handleSubmit = useCallback(async () => {

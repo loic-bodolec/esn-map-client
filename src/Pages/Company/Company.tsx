@@ -1,10 +1,11 @@
 import { Box, Typography } from '@mui/material';
+import logo from '../../assets/logo-codeforge.webp';
 import './Company.scss';
 
 const Company: React.FC = () => {
   return (
     <Box className='company-container'>
-      <img src='/images/logo-codeforge.webp' alt='Company Logo' className='company-logo' />
+      <img src={logo} alt='Company Logo' className='company-logo' />
       <Typography variant='h4' gutterBottom className='company-title'>
         CodeForge
       </Typography>

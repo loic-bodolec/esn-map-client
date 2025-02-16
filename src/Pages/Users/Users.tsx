@@ -1,33 +1,33 @@
 import { Box, Button, CircularProgress, List, ListItem, Typography } from '@mui/material';
-import { memo, useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { memo, useCallback, useState } from 'react';
 import ConfirmDeleteModal from '../../Components/ConfirmDeleteModal/ConfirmDeleteModal';
 import NewUserModal from '../../Components/NewUserModal/NewUserModal';
 import UpdateUserModal from '../../Components/UpdateUserModal/UpdateUserModal';
 import UserCard from '../../Components/UserCard/UserCard';
-import { AppDispatch, RootState } from '../../store/store';
-import { addUser, getUsers, modifyUser, removeUser } from '../../store/usersSlice';
+import {
+  useFetchUsersQuery,
+  useCreateUserMutation,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
+} from '../../store/api/usersApi';
+import { RootState } from '../../store/store';
 import { NewUser, UpdatedUser, User } from '../../types/User';
 import './Users.scss';
+import { useSelector } from 'react-redux';
 
 const Users: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const userRole = useSelector((state: RootState) => state.auth.user?.role);
-  const {
-    users,
-    status: usersStatus,
-    error: usersError,
-  } = useSelector((state: RootState) => state.users);
+
+  const { data: users = [], error: usersError, isLoading: usersLoading } = useFetchUsersQuery();
+  const [createUser] = useCreateUserMutation();
+  const [updateUser] = useUpdateUserMutation();
+  const [deleteUser] = useDeleteUserMutation();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [entityToDelete, setEntityToDelete] = useState<User | null>(null);
   const [userToUpdate, setUserToUpdate] = useState<User | null>(null);
-
-  useEffect(() => {
-    dispatch(getUsers());
-  }, [dispatch]);
 
   const handleOpenModal = useCallback(() => {
     setModalOpen(true);
@@ -59,30 +59,30 @@ const Users: React.FC = () => {
 
   const handleDeleteEntity = useCallback(async () => {
     if (entityToDelete) {
-      dispatch(removeUser(entityToDelete.id));
+      await deleteUser(entityToDelete.id);
       handleCloseConfirmModal();
     }
-  }, [entityToDelete, dispatch, handleCloseConfirmModal]);
+  }, [entityToDelete, deleteUser, handleCloseConfirmModal]);
 
   const handleUpdateUser = useCallback(
     async (updatedUser: UpdatedUser) => {
-      dispatch(modifyUser(updatedUser));
+      await updateUser(updatedUser);
       handleCloseUpdateModal();
     },
-    [dispatch, handleCloseUpdateModal],
+    [updateUser, handleCloseUpdateModal],
   );
 
   const handleCreateUser = async (newUser: NewUser) => {
-    dispatch(addUser(newUser));
+    await createUser(newUser);
     handleCloseModal();
   };
 
-  if (usersStatus === 'loading') {
+  if (usersLoading) {
     return <CircularProgress />;
   }
 
-  if (usersStatus === 'failed') {
-    return <Typography color='error'>{usersError}</Typography>;
+  if (usersError) {
+    return <Typography color='error'>{JSON.stringify(usersError)}</Typography>;
   }
 
   return (

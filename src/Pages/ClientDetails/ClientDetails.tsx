@@ -1,24 +1,14 @@
 import { Box, CircularProgress, List, ListItem, Typography, Link, Chip } from '@mui/material';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ConsultantCard from '../../Components/ConsultantCard/ConsultantCard';
-import { getClientById } from '../../store/clientsSlice';
-import { AppDispatch, RootState } from '../../store/store';
+import { useFetchClientByIdQuery } from '../../store/api/clientsApi';
 import './ClientDetails.scss';
 
 const ClientDetails: React.FC = () => {
   const { clientId } = useParams<{ clientId: string }>();
-  const dispatch = useDispatch<AppDispatch>();
-  const { clientDetails, status, error } = useSelector((state: RootState) => state.clients);
+  const { data: clientDetails, error, isLoading } = useFetchClientByIdQuery(Number(clientId));
 
-  useEffect(() => {
-    if (clientId) {
-      dispatch(getClientById(Number(clientId)));
-    }
-  }, [clientId, dispatch]);
-
-  if (status === 'loading') {
+  if (isLoading) {
     return (
       <Box className='loading-container'>
         <CircularProgress />
@@ -26,16 +16,20 @@ const ClientDetails: React.FC = () => {
     );
   }
 
-  if (status === 'failed') {
+  if (error) {
     return (
       <Box className='error-container'>
-        <Typography color='error'>{error}</Typography>
+        <Typography color='error'>Failed to load client details</Typography>
       </Box>
     );
   }
 
   if (!clientDetails) {
-    return null;
+    return (
+      <Box className='error-container'>
+        <Typography color='error'>Client not found</Typography>
+      </Box>
+    );
   }
 
   return (
