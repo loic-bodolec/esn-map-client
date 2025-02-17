@@ -1,71 +1,71 @@
 # CodeForge - React + TypeScript + Vite
 
-Ce projet est une application web développée avec React, TypeScript et Vite. Il utilise également Redux pour la gestion de l'état et Material-UI pour les composants d'interface utilisateur.
+This project is a web application developed with React, TypeScript, and Vite. It also uses Redux for state management and Material-UI for UI components.
 
-(Projet personnel toujours en développement)
+(Personal project still under development)
 
-## Description de l'application
+## Application Description
 
-CodeForge permet de visualiser les clients d'une ESN sur une carte. L'application est destinée à un usage interne par les collaborateurs de l'ESN, facilitant ainsi la gestion et le suivi des clients et des consultants.
+CodeForge allows you to visualize an IT services company's (ESN) clients on a map. The application is intended for internal use by the company's employees, facilitating the management and tracking of clients and consultants.
 
 <p align="center">
-  <img src="./readme-images/esn-map-0.png" alt="Aperçu de l'application" width="45%" />
-  <img src="./readme-images/esn-map-1.png" alt="Aperçu de l'application" width="45%" />
+  <img src="./readme-images/esn-map-0.png" alt="Application preview" width="45%" />
+  <img src="./readme-images/esn-map-1.png" alt="Application preview" width="45%" />
 </p>
 <p align="center">
-  <img src="./readme-images/esn-map-2.png" alt="Aperçu de l'application" width="45%" />
-  <img src="./readme-images/esn-map-3.png" alt="Aperçu de l'application" width="45%" />
+  <img src="./readme-images/esn-map-2.png" alt="Application preview" width="45%" />
+  <img src="./readme-images/esn-map-3.png" alt="Application preview" width="45%" />
 </p>
 
-### Fonctionnalités principales
+### Main Features
 
-- **Visualisation des clients sur une carte** : Afficher les clients de l'ESN sur une carte.
-- **Gestion des clients** : Voir, ajouter, modifier et supprimer des clients et/ou leurs informations associées.
-- **Gestion des consultants et de leurs compétences** : Voir, ajouter, modifier et supprimer les consultants et leurs expertises.
-- **Filtrage des informations** : Utiliser un filtrage (basique) pour trouver plus rapidement les informations nécessaires.
-- **Gestion des utilisateurs internes de l'application** : Voir, ajouter, modifier et supprimer les utilisateurs et gérer leurs droits (administrateur ou utilisateur simple).
+- **Client visualization**: Display the company's clients on a map.
+- **Client management**: View, add, edit and delete clients and their associated information.
+- **Consultant and skill management**: View, add, edit and delete consultants and their expertise.
+- **Information filtering**: Use basic filtering to quickly find the necessary information.
+- **Internal user management**: View, add, edit and delete users and manage their roles (administrator or regular user).
 
 ## Installation
 
-1. Clonez le dépôt :
+1. Clone the repository:
 
    ```sh
-   git clone <url-du-dépôt>
-   cd <nom-du-dossier>
+   git clone <repository-url>
+   cd <folder-name>
    ```
 
-2. Installer les dépendances
+2. Install dependencies
 
    ```sh
    npm install
    ```
 
-Scripts principaux
+Main scripts
 
-- npm run start : Démarre le serveur de développement.
-- npm run build : Compile le projet pour la production.
-- npm run prettier : Formate le code source avec Prettier.
-- npm run lint : Lint le code source avec ESLint.
-- npm run preview : Prévisualise le build de production.
-- npm run test : Lance les tests unitaires.
+- `npm run start`: Starts the development server.
+- `npm run build`: Compiles the project for production.
+- `npm run prettier`: Formats the source code using Prettier.
+- `npm run lint`: Lints the source code using ESLint.
+- `npm run preview`: Previews the production build.
+- `npm run test`: Runs unit tests.
 - [...]
 
-## Utilisation de Vite
+## Using Vite
 
-Le projet utilise Vite pour le bundling et le développement. La configuration se trouve dans le fichier "vite.config.ts".
+The project uses Vite for bundling and development. The configuration is located in the "vite.config.ts" file.
 
-## Variables d'environnement
+## Environment Variables
 
-Les variables d'environnement sont définies dans le fichier ".env". Un exemple de fichier est fourni sous le nom de ".env.example".
+Environment variables are defined in the ".env" file. An example file is provided under the name ".env.example".
 
-## Configuration TypeScript
+## TypeScript Configuration
 
-Le projet utilise plusieurs fichiers de configuration TypeScript :
+The project uses several TypeScript configuration files:
 
-- tsconfig.json : Fichier de configuration principal.
-- tsconfig.app.json : Configuration pour l'application.
-- tsconfig.node.json : Configuration pour les scripts Node.js.
+- `tsconfig.json`: Main configuration file.
+- `tsconfig.app.json`: Configuration for the application.
+- `tsconfig.node.json`: Configuration for Node.js scripts.
 
 ## Backend Repository
 
-Le dépôt du backend est disponible à l'adresse suivante : [esn-map-server](https://github.com/loic-bodolec/esn-map-server)
+The backend repository is available at: [esn-map-server](https://github.com/loic-bodolec/esn-map-server)
