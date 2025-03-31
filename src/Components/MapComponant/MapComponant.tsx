@@ -153,8 +153,7 @@ const MapComponent: React.FC = () => {
         placeholder={<div style={{ height: '80vh' }}>Chargement de la carte...</div>}
       >
         <TileLayer
-          url='https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}'
-          accessToken='pk.eyJ1IjoibG9pYzE5ODIiLCJhIjoiY2x3OWNuMngxMDI3OTJpbGRjMWRwa2tyciJ9.2WZ31fjymB07S8F4BN-KFQ'
+          url={`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${import.meta.env.VITE_MAPBOX_ACCESS_TOKEN}`}
           id='mapbox/streets-v11'
         />
         {clients.map((client) => (
