@@ -1,10 +1,18 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.json", // Inherits the base configuration from tsconfig.json
   "compilerOptions": {
-    "module": "commonjs",
-    "jsx": "react-jsx",
-    "esModuleInterop": true,
-    "resolveJsonModule": true
+    "module": "commonjs", // Required for Jest as it uses CommonJS module resolution
+    "jsx": "react-jsx", // Enables support for JSX with React
+    "esModuleInterop": true, // Allows importing CommonJS modules seamlessly
+    "resolveJsonModule": true, // Enables importing JSON files directly
+    "isolatedModules": false, // Disabled for Jest since isolated modules are not necessary for tests
+    "noEmit": true // Prevents the generation of .js files during compilation
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "tests/**/*.ts", "tests/**/*.tsx"]
+  "include": [
+    "src/**/*.ts", // Includes all TypeScript files in the src directory
+    "src/**/*.tsx", // Includes all TypeScript React files in the src directory
+    "tests/**/*.ts", // Includes all TypeScript files in the tests directory
+    "tests/**/*.tsx", // Includes all TypeScript React files in the tests directory
+    "jest.setup.ts" // Includes the Jest setup file if it exists
+  ]
 }
