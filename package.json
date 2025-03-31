@@ -26,7 +26,6 @@
     "@mui/material": "^6.4.2",
     "@reduxjs/toolkit": "^2.5.1",
     "axios": "^1.7.9",
-    "dotenv": "^16.4.7",
     "jest-fetch-mock": "^3.0.3",
     "leaflet": "^1.9.4",
     "loglevel": "^1.9.2",
