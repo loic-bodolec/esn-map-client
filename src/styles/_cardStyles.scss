@@ -4,8 +4,8 @@
   width: 100%;
   height: auto;
   margin: 1rem;
-  border-radius: vars.$border-radius;
-  box-shadow: vars.$box-shadow;
+  border-radius: vars.$border-radius !important;
+  background-color: vars.$background-color !important;
 }
 
 .card-content-base {
@@ -17,7 +17,7 @@
 .card-actions-base {
   display: flex;
   justify-content: flex-end;
-  padding: vars.$padding;
+  padding-right: vars.$padding !important;
 }
 
 .card-link-base {
@@ -26,6 +26,7 @@
 
   &:hover {
     text-decoration: underline;
+    color: vars.$primary-color;
   }
 }
 
