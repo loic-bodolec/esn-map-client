@@ -19,7 +19,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     try {
       const result = await login(credentials).unwrap();
-      // Stockez le token et l'utilisateur dans le sessionStorage
+      // Store the token and user information in sessionStorage
       sessionStorage.setItem(
         'user',
         JSON.stringify({ username: result.username, role: result.role }),
