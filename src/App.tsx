@@ -4,12 +4,12 @@ import { Provider } from 'react-redux';
 import store from './store/store';
 import ProtectedRoute from './Components/ProtectedRoute';
 import ProtectedLayout from './Components/ProtectedLayout/ProtectedLayout';
-import ClientDetails from './Pages/ClientDetails/ClientDetails';
 
 const Login = lazy(() => import('./Pages/Login/Login'));
 const Home = lazy(() => import('./Pages/Home/Home'));
 const Consultants = lazy(() => import('./Pages/Consultants/Consultants'));
 const Clients = lazy(() => import('./Pages/Clients/Clients'));
+const ClientDetails = lazy(() => import('./Pages/ClientDetails/ClientDetails'));
 const Company = lazy(() => import('./Pages/Company/Company'));
 const Users = lazy(() => import('./Pages/Users/Users'));
 
